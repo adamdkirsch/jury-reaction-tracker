@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Jury Reaction Tracker</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f4f5f7;color:#17191d}
+.wrap{max-width:780px;margin:0 auto;padding:16px 12px 28px}h1{margin:0 0 10px;font-size:24px}
+.box{margin-bottom:12px;padding:12px;background:#fff;border:1px solid #d7dce3;border-radius:12px}
+label,.saved-title{display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:#5b6470}
+input{width:100%;height:44px;border:1px solid #bfc6cf;border-radius:8px;padding:0 11px;font-size:17px;background:white}
+.jury{display:grid;grid-template-columns:1fr 1fr;gap:8px}.col{display:grid;grid-template-rows:repeat(9,58px);gap:7px}
+.seat,.vacant{height:58px;border-radius:10px}.seat{display:grid;grid-template-columns:38px 1fr;align-items:center;gap:4px;padding:6px 7px;border:1px solid #d7dce3;background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.seat:active{background:#edf4fd;border-color:#215da8}.name{font-size:14px;font-weight:800}.stats{display:flex;justify-content:flex-end;gap:4px;align-items:center;font-size:10px;font-weight:750;color:#59616d}
+.pill{min-width:24px;text-align:center;border-radius:999px;padding:4px 5px;background:#eef0f3}.net.pos{background:#e8f5ec}.net.neg{background:#fbeaea}.q{background:#fff4d7}
+.vacant{border:1px dashed #c8ced7;background:rgba(255,255,255,.45)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;text-align:center}.metric{padding:8px 3px;border-radius:9px;background:#f6f7f9}.metric b{display:block;font-size:20px}.metric span{font-size:11px;color:#6b7280}
+.actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}.action{min-height:42px;border:1px solid #cfd5dd;border-radius:8px;background:white;font-weight:700;font-size:13px}.save{background:#215da8;border-color:#215da8;color:white}.reset{color:#8a1c1c}
+.saved{display:none}.saved.visible{display:block}.saved-list{display:grid;gap:8px}.saved-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px;border-radius:8px;background:#f6f7f9}.saved-row strong{display:block;font-size:14px}.saved-row span{display:block;margin-top:2px;font-size:11px;color:#6b7280}.load{border:1px solid #cfd5dd;border-radius:7px;background:white;padding:7px 10px;font-size:12px;font-weight:700}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.28);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}.overlay.visible{display:flex}.card{width:min(430px,94vw);background:#fff;border-radius:16px;padding:16px;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+.rtitle{text-align:center;font-size:15px;color:#626b77;margin-bottom:12px}.rtitle strong{display:block;margin-top:2px;font-size:28px;color:#17191d}.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.rbtn{height:88px;border:1px solid #cfd5dd;border-radius:12px;font-size:34px;font-weight:850}.positive{background:#e8f5ec}.question{background:#fff4d7}.negative{background:#fbeaea}.cancel{width:100%;margin-top:10px;height:40px;border:0;background:transparent;color:#6b7280;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Jury Reaction Tracker</h1>
+<div class="box"><label for="sessionName">SESSION NAME</label><input id="sessionName" type="text" placeholder="e.g. Opening Statement"></div>
+<div class="jury"><div class="col"><div class="seat" data-name="J1"><div class="name">J1</div><div class="stats"><span class="pill net" id="net-J1">0</span><span class="pill q" id="q-J1">? 0</span></div></div>
+<div class="seat" data-name="J2"><div class="name">J2</div><div class="stats"><span class="pill net" id="net-J2">0</span><span class="pill q" id="q-J2">? 0</span></div></div>
+<div class="seat" data-name="J3"><div class="name">J3</div><div class="stats"><span class="pill net" id="net-J3">0</span><span class="pill q" id="q-J3">? 0</span></div></div>
+<div class="seat" data-name="J4"><div class="name">J4</div><div class="stats"><span class="pill net" id="net-J4">0</span><span class="pill q" id="q-J4">? 0</span></div></div>
+<div class="seat" data-name="J5"><div class="name">J5</div><div class="stats"><span class="pill net" id="net-J5">0</span><span class="pill q" id="q-J5">? 0</span></div></div>
+<div class="seat" data-name="J6"><div class="name">J6</div><div class="stats"><span class="pill net" id="net-J6">0</span><span class="pill q" id="q-J6">? 0</span></div></div>
+<div class="seat" data-name="J7"><div class="name">J7</div><div class="stats"><span class="pill net" id="net-J7">0</span><span class="pill q" id="q-J7">? 0</span></div></div>
+<div class="seat" data-name="J8"><div class="name">J8</div><div class="stats"><span class="pill net" id="net-J8">0</span><span class="pill q" id="q-J8">? 0</span></div></div>
+<div class="seat" data-name="J9"><div class="name">J9</div><div class="stats"><span class="pill net" id="net-J9">0</span><span class="pill q" id="q-J9">? 0</span></div></div></div><div class="col"><div class="seat" data-name="J10"><div class="name">J10</div><div class="stats"><span class="pill net" id="net-J10">0</span><span class="pill q" id="q-J10">? 0</span></div></div>
+<div class="seat" data-name="J11"><div class="name">J11</div><div class="stats"><span class="pill net" id="net-J11">0</span><span class="pill q" id="q-J11">? 0</span></div></div>
+<div class="seat" data-name="J12"><div class="name">J12</div><div class="stats"><span class="pill net" id="net-J12">0</span><span class="pill q" id="q-J12">? 0</span></div></div>
+<div class="seat" data-name="A1"><div class="name">A1</div><div class="stats"><span class="pill net" id="net-A1">0</span><span class="pill q" id="q-A1">? 0</span></div></div>
+<div class="seat" data-name="A2"><div class="name">A2</div><div class="stats"><span class="pill net" id="net-A2">0</span><span class="pill q" id="q-A2">? 0</span></div></div>
+<div class="seat" data-name="A3"><div class="name">A3</div><div class="stats"><span class="pill net" id="net-A3">0</span><span class="pill q" id="q-A3">? 0</span></div></div>
+<div class="seat" data-name="A4"><div class="name">A4</div><div class="stats"><span class="pill net" id="net-A4">0</span><span class="pill q" id="q-A4">? 0</span></div></div><div class="vacant"></div><div class="vacant"></div></div></div>
+<div class="box">
+<div class="metrics">
+<div class="metric"><b id="positiveTotal">0</b><span>Positive</span></div>
+<div class="metric"><b id="negativeTotal">0</b><span>Negative</span></div>
+<div class="metric"><b id="questionTotal">0</b><span>Questions</span></div>
+<div class="metric"><b id="netTotal">0</b><span>Net</span></div>
+</div>
+<div class="actions">
+<button id="saveBtn" class="action save">Save Session</button>
+<button id="exportBtn" class="action">Export CSV</button>
+<button id="resetBtn" class="action reset">Reset Current</button>
+</div>
+</div>
+<div id="savedPanel" class="box saved"><div class="saved-title">SAVED SESSIONS</div><div id="savedList" class="saved-list"></div></div>
+</div>
+<div id="overlay" class="overlay" aria-hidden="true"><div class="card">
+<div class="rtitle">Record reaction for<strong id="popupJuror"></strong></div>
+<div class="rgrid">
+<button class="rbtn positive" data-kind="positive">↑</button>
+<button class="rbtn question" data-kind="questions">?</button>
+<button class="rbtn negative" data-kind="negative">↓</button>
+</div>
+<button id="cancel" class="cancel">Cancel</button>
+</div></div>
+
+<script>
+(()=>{
+const people=["J1","J2","J3","J4","J5","J6","J7","J8","J9","J10","J11","J12","A1","A2","A3","A4"];
+const blank=()=>({positive:0,negative:0,questions:0});
+let data=Object.fromEntries(people.map(p=>[p,blank()])),selected=null;
+const overlay=document.getElementById("overlay"),popup=document.getElementById("popupJuror"),sessionName=document.getElementById("sessionName");
+function totals(){let positive=0,negative=0,questions=0;people.forEach(p=>{positive+=data[p].positive;negative+=data[p].negative;questions+=data[p].questions});return{positive,negative,questions,net:positive-negative}}
+function render(){people.forEach(p=>{const d=data[p],n=d.positive-d.negative,el=document.getElementById("net-"+p),q=document.getElementById("q-"+p);el.textContent=n>0?"+"+n:n;el.classList.toggle("pos",n>0);el.classList.toggle("neg",n<0);q.textContent="? "+d.questions});const t=totals();document.getElementById("positiveTotal").textContent=t.positive;document.getElementById("negativeTotal").textContent=t.negative;document.getElementById("questionTotal").textContent=t.questions;document.getElementById("netTotal").textContent=t.net>0?"+"+t.net:t.net}
+function openSeat(p){selected=p;popup.textContent=p;overlay.classList.add("visible");overlay.setAttribute("aria-hidden","false")}
+function closeSeat(){selected=null;overlay.classList.remove("visible");overlay.setAttribute("aria-hidden","true")}
+document.querySelectorAll(".seat").forEach(s=>s.addEventListener("click",()=>openSeat(s.dataset.name)));
+document.querySelectorAll(".rbtn").forEach(b=>b.addEventListener("click",()=>{if(!selected)return;data[selected][b.dataset.kind]++;render();closeSeat()}));
+document.getElementById("cancel").addEventListener("click",closeSeat);overlay.addEventListener("click",e=>{if(e.target===overlay)closeSeat()});
+function getSaved(){try{return JSON.parse(localStorage.getItem("juryReactionSessionsV7")||"[]")}catch{return[]}}
+function setSaved(x){localStorage.setItem("juryReactionSessionsV7",JSON.stringify(x))}
+function current(){const t=totals(),now=new Date();return{id:now.getTime(),name:sessionName.value.trim()||"Untitled Session",savedAt:now.toISOString(),totals:t,seats:JSON.parse(JSON.stringify(data))}}
+document.getElementById("saveBtn").addEventListener("click",()=>{const s=getSaved();s.unshift(current());setSaved(s);renderSaved();alert("Session saved on this device.")});
+function esc(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
+document.getElementById("exportBtn").addEventListener("click",()=>{const s=current();const rows=[["Session Name",s.name],["Saved At",s.savedAt],["Positive Reactions",s.totals.positive],["Negative Reactions",s.totals.negative],["Juror Questions",s.totals.questions],["Net",s.totals.net],[],["Seat","Positive","Negative","Questions","Total Reactions","Net"]];people.forEach(p=>{const d=s.seats[p];rows.push([p,d.positive,d.negative,d.questions,d.positive+d.negative+d.questions,d.positive-d.negative])});const csv=rows.map(r=>r.map(esc).join(",")).join("\r\n"),blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a"),safe=s.name.replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"")||"jury_session";a.href=url;a.download=safe+".csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+document.getElementById("resetBtn").addEventListener("click",()=>{if(!confirm("Reset the current session? Saved sessions will not be deleted."))return;data=Object.fromEntries(people.map(p=>[p,blank()]));sessionName.value="";closeSeat();render()});
+function load(s){sessionName.value=s.name||"";data=Object.fromEntries(people.map(p=>{const d=s.seats?.[p]||blank();return[p,{positive:+(d.positive||0),negative:+(d.negative||0),questions:+(d.questions||0)}]}));closeSeat();render();scrollTo({top:0,behavior:"smooth"})}
+function renderSaved(){const s=getSaved(),panel=document.getElementById("savedPanel"),list=document.getElementById("savedList");list.innerHTML="";if(!s.length){panel.classList.remove("visible");return}panel.classList.add("visible");s.slice(0,20).forEach(x=>{const row=document.createElement("div");row.className="saved-row";const info=document.createElement("div"),strong=document.createElement("strong"),span=document.createElement("span"),btn=document.createElement("button");strong.textContent=x.name||"Untitled Session";const date=new Date(x.savedAt),n=+(x.totals?.net||0),q=+(x.totals?.questions||0);span.textContent=`${date.toLocaleString()} • Net ${n>0?"+":""}${n} • ? ${q}`;info.append(strong,span);btn.className="load";btn.textContent="Load";btn.addEventListener("click",()=>load(x));row.append(info,btn);list.append(row)})}
+render();renderSaved();
+})();
+</script>
+</body></html>
